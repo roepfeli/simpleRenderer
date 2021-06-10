@@ -1,0 +1,11 @@
+# ignore object-files
+*.o
+
+# ignore elf
+*.elf
+
+#ignore everything in the build-directory
+build/
+
+# ignore vscode
+.vscode/
