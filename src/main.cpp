@@ -1,3 +1,5 @@
+#define GLM_ENABLE_EXPERIMENTAL
+
 #include <GL/glew.h>
 
 #include <glm/glm.hpp>
@@ -21,6 +23,7 @@
 #include <string>
 
 #include <thread>
+
 
 int main()
 {
