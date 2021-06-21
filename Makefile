@@ -1,28 +1,52 @@
-CC = g++
-LD = g++
+CXX 	  		?= g++
+LD 				:= $(CXX)
+TARGET 			:= simplerender.elf
+CXXFLAGS 		:= -Wall -Wextra
+BUILD 			:= ./build
+OBJ_DIR 		:= $(BUILD)/objects
+APP_DIR 		:= $(BUILD)
+SRC 			:= $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) # if subfolder exist in src
+OBJECTS			:= $(SRC:%.cpp=$(OBJ_DIR)/%.o)
 
-CFLAGS = -Wall -g
-CXXFLAGS = $(CFLAGS) -std=gnu++17
-INCLUDE = -I./include/ -I./lib/include/
-LFLAGS = -lGL -lGLEW -lglfw -lm
-DEBUG_FLAGS = -ggdb
-SRC_DIR = src
-OBJ_DIR = build
-PROG_NAME = simpleRender.elf
+# add external libs and flags
+CXXFLAGS 		+= -I/usr/include $(VERSION_FLAGS)
+LDFLAGS 		:= -L/usr/lib -lstdc++ -lm
+LDFLAGS			+= $(addprefix -L, $(wildcard lib/*/build/objects))
+LDLIBS			:= -lGL -lGLEW -lglfw -lm
+INCLUDE  		:= -Iinclude/
+INCLUDE			+= $(addprefix -I, $(wildcard lib/*/include/))
 
+all: build $(APP_DIR)/$(TARGET)
 
-SOURCES = $(wildcard $(SRC_DIR)/*.cpp)
-OBJECTS = $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o , $(SOURCES))
+$(TARGET): $(OBJS)
+	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
-build: $(OBJECTS)
-	$(LD) $^ -o $(PROG_NAME) $(LFLAGS)
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) $(INCLUDE) -c $< -o $@
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
-	@mkdir -p $(OBJ_DIR)
-	$(CC) $(INCLUDE) $(DEBUG_FLAGS) -c $< $(CXXFLAGS) -o $@
+$(APP_DIR)/$(TARGET): $(OBJECTS)
+	@mkdir -p $(@D)
+	$(LD) $(LDFLAGS) -o $(APP_DIR)/$(TARGET) $^ $(LDLIBS)
 
-.PHONY: clean build
+valgrind: all
+	valgrind \
+		--leak-check=full \
+		--trace-children=yes \
+		--show-leak-kinds=all \
+		--track-origins=yes \
+		--log-file=./build/valgrind-out.txt \
+		./build/$(TARGET)
+
+debug: CXXFLAGS += -DDEBUG -g -v
+debug: clean build $(APP_DIR)/$(TARGET)
+
+release: CXXFLAGS += -O2
+release: clean all
+	-@strip $(BUILD)/$(TARGET)
+
+.PHONY: all build clean debug release valgrind install
 
 clean:
-	rm -rf $(OBJ_DIR)/*
-	rm *.elf
+	-@rm -rvf $(BUILD)/$(TARGET)
+	-@rm -rvf $(OBJ_DIR)/*
