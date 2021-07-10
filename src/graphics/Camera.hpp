@@ -2,10 +2,13 @@
 
 #include <glm/glm.hpp>
 
+namespace graphics
+{
+
 class Camera
 {
 private:
-    glm::mat4 GetCameraRotMat();
+    glm::mat4 getCameraRotationMatrix();
     glm::mat4 m_perspective;
 
 public:
@@ -14,9 +17,11 @@ public:
 
     Camera(float fov, float ratio, float fnear, float ffar);
 
-    void MovePos(glm::vec3& movement);
-    void MoveAlongDir(glm::vec3& movement);
-    glm::mat4 GetViewMatrix();
+    void movePosition(glm::vec3& movement);
+    void moveAlongDirection(glm::vec3& movement);
+    glm::mat4 getViewMatrix();
 
-    glm::mat4 GetPerspective();
+    glm::mat4 getPerspective();
 };
+
+} // namespace graphics

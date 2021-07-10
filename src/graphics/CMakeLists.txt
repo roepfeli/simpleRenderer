@@ -5,8 +5,8 @@ add_library(graphics
     Display.cpp
     Mesh.hpp
     Mesh.cpp
-    Render.hpp
-    Render.cpp
+    render.hpp
+    render.cpp
     Shader.hpp
     Shader.cpp
     stb_image.h

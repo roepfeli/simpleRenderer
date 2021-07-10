@@ -1,10 +1,10 @@
-#include "Shader.hpp"
+#include <Shader.hpp>
 
 #include <iostream>
 
 #include <GL/glew.h>
 
-#include <Util.hpp>
+#include <util.hpp>
 
 static unsigned int CompileShader(unsigned int type, const std::string& source)
 {
@@ -35,11 +35,14 @@ static unsigned int CompileShader(unsigned int type, const std::string& source)
     return id;
 }
 
+namespace graphics
+{
+
 Shader::Shader(const char* vertexShader, const char* fragmentShader)
 {
     m_program = glCreateProgram();
-    unsigned int vs = CompileShader(GL_VERTEX_SHADER, Util::LoadAsString(vertexShader));
-    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, Util::LoadAsString(fragmentShader));
+    unsigned int vs = CompileShader(GL_VERTEX_SHADER, util::loadAsString(vertexShader));
+    unsigned int fs = CompileShader(GL_FRAGMENT_SHADER, util::loadAsString(fragmentShader));
 
     glAttachShader(m_program, vs);
     glAttachShader(m_program, fs);
@@ -90,3 +93,5 @@ void Shader::setUniform1i(const std::string& name, int value)
 
     glUniform1i(location, value);
 }
+
+} // namespace graphics

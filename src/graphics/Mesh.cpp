@@ -1,5 +1,5 @@
-#include "Mesh.hpp"
-#include <Util.hpp>
+#include <Mesh.hpp>
+#include <util.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -82,7 +82,7 @@ static LineType getLineType(std::string& line)
 
 static vertexPos processVertexPos(std::string& line)
 {
-    std::vector<std::string> numbers = Util::splitString(line, ' ');
+    std::vector<std::string> numbers = util::splitString(line, ' ');
     vertexPos position;
 
     position.x = atof(numbers[1].c_str());
@@ -94,7 +94,7 @@ static vertexPos processVertexPos(std::string& line)
 
 static texturePos processTexturePos(std::string& line)
 {
-    std::vector<std::string> numbers = Util::splitString(line, ' ');
+    std::vector<std::string> numbers = util::splitString(line, ' ');
 
     texturePos position;
 
@@ -106,31 +106,34 @@ static texturePos processTexturePos(std::string& line)
 
 static vertexIndexData processFace(std::string& line)
 {
-    std::vector<std::string> numbers = Util::splitString(line, ' ');
+    std::vector<std::string> numbers = util::splitString(line, ' ');
 
     vertexIndexData vid;
 
-    auto numbers1 = Util::splitString(numbers[1], '/');
+    auto numbers1 = util::splitString(numbers[1], '/');
     vid.vert1 = atoi(numbers1[0].c_str()) - 1;
     vid.tex1 = atoi(numbers1[1].c_str()) - 1;
 
-    auto numbers2 = Util::splitString(numbers[2], '/');
+    auto numbers2 = util::splitString(numbers[2], '/');
     vid.vert2 = atoi(numbers2[0].c_str()) - 1;
     vid.tex2 = atoi(numbers2[1].c_str()) - 1;
 
-    auto numbers3 = Util::splitString(numbers[3], '/');
+    auto numbers3 = util::splitString(numbers[3], '/');
     vid.vert3 = atoi(numbers3[0].c_str()) - 1;
     vid.tex3 = atoi(numbers3[1].c_str()) - 1;
 
     return vid;
 }
 
-Mesh::Mesh(const std::string& pathToObj)
+namespace graphics
 {
-    m_pathToObj = pathToObj;
+
+Mesh::Mesh(const std::string& pathToObject)
+{
+    m_pathToObject = pathToObject;
 
     // TODO: put mesh-loading in Util.cpp...
-    std::ifstream inputStream(pathToObj.c_str());
+    std::ifstream inputStream(pathToObject.c_str());
 
     std::string line;
 
@@ -212,3 +215,5 @@ void Mesh::unbindAll()
 {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+} // namespace graphics

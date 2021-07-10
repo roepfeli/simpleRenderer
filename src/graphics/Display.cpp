@@ -1,8 +1,11 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "Display.hpp"
-#include <Input.hpp>
+#include <Display.hpp>
+#include <input.hpp>
+
+namespace graphics
+{
 
 Display::Display(const size_t width, const size_t height, const char* name)
     : m_width(width)
@@ -18,7 +21,7 @@ Display::Display(const size_t width, const size_t height, const char* name)
 
     glewInit();
 
-    Input::Init(m_window);
+    input::init(m_window);
 }
 
 Display::~Display()
@@ -26,17 +29,19 @@ Display::~Display()
     glfwTerminate();
 }
 
-bool Display::ShouldClose()
+bool Display::shouldClose()
 {
     return glfwWindowShouldClose(m_window) || m_close;
 }
 
-void Display::RequestClose()
+void Display::requestClose()
 {
     m_close = true;
 }
 
-void Display::Present()
+void Display::present()
 {
     glfwSwapBuffers(m_window);
 }
+
+} // namespace graphics

@@ -2,6 +2,9 @@
 
 #include <GLFW/glfw3.h>
 
+namespace graphics
+{
+
 class Display
 {
 private:
@@ -16,7 +19,9 @@ public:
     Display(size_t width, size_t height, const char* name);
     ~Display();
 
-    bool ShouldClose();
-    void Present();
-    void RequestClose();
+    bool shouldClose();
+    void present();
+    void requestClose();
 };
+
+} // namespace graphics

@@ -1,6 +1,6 @@
 add_library(input
-    Input.hpp
-    Input.cpp
+    input.hpp
+    input.cpp
 )
 
 target_include_directories(input PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}")

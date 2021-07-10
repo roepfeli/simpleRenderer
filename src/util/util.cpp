@@ -1,4 +1,4 @@
-#include "Util.hpp"
+#include <util.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -6,7 +6,10 @@
 #include <string>
 #include <vector>
 
-std::string Util::LoadAsString(const char* path)
+namespace util
+{
+
+std::string loadAsString(const char* path)
 {
     std::ifstream file;
     file.open(path, std::ios::in);
@@ -29,7 +32,7 @@ std::string Util::LoadAsString(const char* path)
     return content;
 }
 
-std::vector<std::string> Util::splitString(std::string& str, char denominator)
+std::vector<std::string> splitString(std::string& str, char denominator)
 {
     std::vector<std::string> splits;
 
@@ -55,3 +58,5 @@ std::vector<std::string> Util::splitString(std::string& str, char denominator)
 
     return splits;
 }
+
+} // namespace util

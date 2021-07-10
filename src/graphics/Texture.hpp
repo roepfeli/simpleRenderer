@@ -2,6 +2,8 @@
 
 #include <string>
 
+namespace graphics
+{
 class Texture
 {
 public:
@@ -27,3 +29,5 @@ private:
 
     uint8_t* m_localBuffer;
 };
+
+} // namespace graphics

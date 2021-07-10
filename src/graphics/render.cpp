@@ -1,11 +1,11 @@
-#include "Render.hpp"
-#include "Camera.hpp"
+#include <Camera.hpp>
+#include <render.hpp>
 
 #include <glm/mat4x4.hpp>
 
 #include <GL/glew.h>
 
-namespace Render
+namespace graphics::render
 {
 
 void draw(Mesh& mesh, Texture& texture, Shader& shader, const glm::mat4& mvp)
@@ -39,4 +39,4 @@ void draw(Mesh& mesh, Texture& texture, Shader& shader, const glm::mat4& mvp)
     Shader::UnbindAll();
 }
 
-} // namespace Render
+} // namespace graphics::render
