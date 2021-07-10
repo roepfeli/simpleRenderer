@@ -1,5 +1,5 @@
-#include "../include/Mesh.hpp"
-#include "../include/Util.hpp"
+#include "Mesh.hpp"
+#include <Util.hpp>
 
 #include <fstream>
 #include <iostream>

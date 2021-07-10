@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../include/Camera.hpp"
-#include "../include/Mesh.hpp"
-#include "../include/Shader.hpp"
-#include "../include/Texture.hpp"
+#include "Camera.hpp"
+#include "Mesh.hpp"
+#include "Shader.hpp"
+#include "Texture.hpp"
 
 namespace Render
 {

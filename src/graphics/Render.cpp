@@ -1,5 +1,5 @@
-#include "../include/Render.hpp"
-#include "../include/Camera.hpp"
+#include "Render.hpp"
+#include "Camera.hpp"
 
 #include <glm/mat4x4.hpp>
 

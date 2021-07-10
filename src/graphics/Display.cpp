@@ -1,7 +1,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include <Display.hpp>
+#include "Display.hpp"
 #include <Input.hpp>
 
 Display::Display(const size_t width, const size_t height, const char* name)
