@@ -3,8 +3,10 @@
 #include <string>
 #include <vector>
 
-namespace Util
+namespace util
 {
-std::string LoadAsString(const char* path);
+
+std::string loadAsString(const char* path);
 std::vector<std::string> splitString(std::string& str, char denominator);
-}; // namespace Util
+
+}; // namespace util

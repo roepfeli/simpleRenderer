@@ -1,4 +1,4 @@
-#include <Input.hpp>
+#include <input.hpp>
 
 #include <GLFW/glfw3.h>
 
@@ -23,7 +23,10 @@ static void cursor_position_callback(GLFWwindow* window, double posX, double pos
     mousePosY = posY;
 }
 
-void Input::Init(GLFWwindow* window)
+namespace input
+{
+
+void init(GLFWwindow* window)
 {
     inputWindow = window;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -31,7 +34,7 @@ void Input::Init(GLFWwindow* window)
     glfwSetCursorPosCallback(window, cursor_position_callback);
 }
 
-bool Input::IsKeyPressed(int key)
+bool isKeyPressed(int key)
 {
     if (key < 0 || key >= 256)
     {
@@ -41,26 +44,28 @@ bool Input::IsKeyPressed(int key)
     return keyStates[key];
 }
 
-void Input::Update()
+void update()
 {
     glfwPollEvents();
 }
 
-float Input::GetMouseX()
+float getMouseX()
 {
     return mousePosX;
 }
 
-float Input::GetMouseY()
+float getMouseY()
 {
     return mousePosY;
 }
 
-float Input::GetMouseDX()
+float getMouseDX()
 {
     return mousePosX - mousePosPrevX;
 }
-float Input::GetMouseDY()
+float getMouseDY()
 {
     return mousePosY - mousePosPrevY;
 }
+
+} // namespace input

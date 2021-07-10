@@ -4,6 +4,9 @@
 
 #include <GL/glew.h>
 
+namespace graphics
+{
+
 Texture::Texture(const std::string& pathToTexture)
     : m_textureID(0)
     , m_pathToTexture(pathToTexture)
@@ -59,3 +62,5 @@ void Texture::unbindAll(unsigned int slot)
     glActiveTexture(GL_TEXTURE0 + slot);
     glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+} // namespace graphics

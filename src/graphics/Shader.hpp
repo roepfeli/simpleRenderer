@@ -2,6 +2,8 @@
 
 #include <glm/mat4x4.hpp>
 #include <string>
+namespace graphics
+{
 
 class Shader
 {
@@ -20,3 +22,5 @@ public:
 
     static void UnbindAll();
 };
+
+} // namespace graphics

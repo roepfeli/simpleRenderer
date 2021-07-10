@@ -3,6 +3,8 @@
 #include <string>
 #include <vector>
 
+namespace graphics
+{
 struct Vertex
 {
     float x, y, z;
@@ -15,14 +17,16 @@ class Mesh
 private:
     unsigned int m_vbo;
     std::vector<Vertex> m_verticies;
-    std::string m_pathToObj;
+    std::string m_pathToObject;
 
 protected:
 public:
-    Mesh(const std::string& pathToObj);
+    Mesh(const std::string& pathToObject);
     ~Mesh();
 
     std::vector<Vertex>& getVerticies();
     void bind();
     static void unbindAll();
 };
+
+} // namespace graphics

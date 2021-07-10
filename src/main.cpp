@@ -12,18 +12,19 @@
 
 #include <Camera.hpp>
 #include <Display.hpp>
-#include <Input.hpp>
 #include <Mesh.hpp>
-#include <Render.hpp>
 #include <Shader.hpp>
 #include <Texture.hpp>
-#include <Util.hpp>
+#include <input.hpp>
+#include <render.hpp>
+#include <util.hpp>
 
 #include <iostream>
 #include <string>
 
 #include <thread>
 
+using namespace graphics;
 
 int main()
 {
@@ -50,56 +51,56 @@ int main()
     Texture texture("res/textures/marble.jpg");
     Shader shader("res/shaders/shader.vert", "res/shaders/shader.frag");
 
-    while (!display.ShouldClose())
+    while (!display.shouldClose())
     {
-        Input::Update();
+        input::update();
 
-        if (Input::IsKeyPressed(GLFW_KEY_Q))
+        if (input::isKeyPressed(GLFW_KEY_Q))
         {
-            display.RequestClose();
+            display.requestClose();
         }
 
-        if (Input::IsKeyPressed(GLFW_KEY_W))
+        if (input::isKeyPressed(GLFW_KEY_W))
         {
             glm::vec3 tmp = glm::vec3(0.0f, 0.0f, 0.02f);
-            camera.MoveAlongDir(tmp);
+            camera.moveAlongDirection(tmp);
         }
 
-        if (Input::IsKeyPressed(GLFW_KEY_A))
+        if (input::isKeyPressed(GLFW_KEY_A))
         {
             glm::vec3 tmp = glm::vec3(0.02f, 0.0f, 0.0f);
-            camera.MoveAlongDir(tmp);
+            camera.moveAlongDirection(tmp);
         }
 
-        if (Input::IsKeyPressed(GLFW_KEY_S))
+        if (input::isKeyPressed(GLFW_KEY_S))
         {
             glm::vec3 tmp = glm::vec3(0.0f, 0.0f, -0.02f);
-            camera.MoveAlongDir(tmp);
+            camera.moveAlongDirection(tmp);
         }
 
-        if (Input::IsKeyPressed(GLFW_KEY_D))
+        if (input::isKeyPressed(GLFW_KEY_D))
         {
             glm::vec3 tmp = glm::vec3(-0.02f, 0.0f, 0.0f);
-            camera.MoveAlongDir(tmp);
+            camera.moveAlongDirection(tmp);
         }
 
-        camera.m_rot.y = Input::GetMouseX() * 0.001f;
-        camera.m_rot.x = Input::GetMouseY() * 0.001f * (640.0f / 480.0f);
+        camera.m_rot.y = input::getMouseX() * 0.001f;
+        camera.m_rot.x = input::getMouseY() * 0.001f * (640.0f / 480.0f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glm::mat4 mvpTeapot =
-            camera.GetPerspective() *
-            (camera.GetViewMatrix() * glm::scale(glm::mat4(1.0f), glm::vec3(0.5, 0.5, 0.5)));
+            camera.getPerspective() *
+            (camera.getViewMatrix() * glm::scale(glm::mat4(1.0f), glm::vec3(0.5, 0.5, 0.5)));
 
-        glm::mat4 mvpCube = camera.GetPerspective() *
-                            (camera.GetViewMatrix() *
+        glm::mat4 mvpCube = camera.getPerspective() *
+                            (camera.getViewMatrix() *
                              glm::translate(glm::scale(glm::mat4(1.0f), glm::vec3(0.2, 0.2, 0.2)),
                                             glm::vec3(15, 15, 0)));
 
-        Render::draw(meshTeapot, texture, shader, mvpTeapot);
-        Render::draw(meshCube, texture, shader, mvpCube);
+        render::draw(meshTeapot, texture, shader, mvpTeapot);
+        render::draw(meshCube, texture, shader, mvpCube);
 
-        display.Present();
+        display.present();
     }
 }
