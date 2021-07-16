@@ -17,7 +17,7 @@ public:
 
     Camera(float fov, float ratio, float fnear, float ffar);
 
-    void movePosition(glm::vec3& movement);
+    void movePosition(const glm::vec3& movement);
     void moveAlongDirection(glm::vec3& movement);
     glm::mat4 getViewMatrix();
 

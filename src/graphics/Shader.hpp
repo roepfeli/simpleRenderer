@@ -18,6 +18,10 @@ public:
 
     void setUniform1i(const std::string& name, int value);
 
+    void setUniform3fv(const std::string& name, const glm::vec3& vector);
+
+    void setUniform1f(const std::string& name, float value);
+
     void bind();
 
     static void UnbindAll();

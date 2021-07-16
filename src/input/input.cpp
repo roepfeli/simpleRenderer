@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
-static bool keyStates[256];
+static bool keyStates[512];
 static GLFWwindow* inputWindow;
 
 static float mousePosPrevX = 0.0f;
@@ -36,7 +36,7 @@ void init(GLFWwindow* window)
 
 bool isKeyPressed(int key)
 {
-    if (key < 0 || key >= 256)
+    if (key < 0 || key >= 512)
     {
         return false;
     }

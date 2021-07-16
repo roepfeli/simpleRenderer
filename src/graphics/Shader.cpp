@@ -94,4 +94,28 @@ void Shader::setUniform1i(const std::string& name, int value)
     glUniform1i(location, value);
 }
 
+void Shader::setUniform3fv(const std::string& name, const glm::vec3& vector)
+{
+    int location = glGetUniformLocation(m_program, name.c_str());
+
+    if (location == -1)
+    {
+        std::cout << "No Uniform named " << name << " found\n";
+    }
+
+    glUniform3f(location, vector[0], vector[1], vector[2]);
+}
+
+void Shader::setUniform1f(const std::string& name, float value)
+{
+    int location = glGetUniformLocation(m_program, name.c_str());
+
+    if (location == -1)
+    {
+        std::cout << "No Uniform named " << name << " found\n";
+    }
+
+    glUniform1f(location, value);
+}
+
 } // namespace graphics

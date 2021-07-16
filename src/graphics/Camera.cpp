@@ -21,7 +21,7 @@ Camera::Camera(float fov, float ratio, float zNear, float zFar)
     m_rot = {0.0f, 0.0f, 0.0f};
 }
 
-void Camera::movePosition(glm::vec3& movement)
+void Camera::movePosition(const glm::vec3& movement)
 {
     m_pos += movement;
 }

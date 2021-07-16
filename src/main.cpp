@@ -19,6 +19,7 @@
 #include <render.hpp>
 #include <util.hpp>
 
+#include <algorithm>
 #include <iostream>
 #include <string>
 
@@ -36,6 +37,8 @@ int main()
 
     std::cout << glGetString(GL_VERSION) << std::endl;
 
+    camera.movePosition(glm::vec3(2.0f, -2.0f, -5.0f));
+
     glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
 
     // glFrontFace(GL_CCW);
@@ -51,36 +54,52 @@ int main()
     Texture texture("res/textures/marble.jpg");
     Shader shader("res/shaders/shader.vert", "res/shaders/shader.frag");
 
+    float speedScaler = 0.04f;
+
     while (!display.shouldClose())
     {
         input::update();
 
-        if (input::isKeyPressed(GLFW_KEY_Q))
+        if (input::isKeyPressed(GLFW_KEY_ESCAPE))
         {
             display.requestClose();
         }
 
+        if (input::isKeyPressed(GLFW_KEY_KP_SUBTRACT))
+        {
+            std::cout << "KEY_MINUS\n";
+            speedScaler -= 0.004f;
+            speedScaler = std::clamp(speedScaler, 0.02f, 0.20f);
+        }
+
+        if (input::isKeyPressed(GLFW_KEY_KP_ADD))
+        {
+            std::cout << "KEY_KP_ADD\n";
+            speedScaler += 0.004f;
+            speedScaler = std::clamp(speedScaler, 0.02f, 0.20f);
+        }
+
         if (input::isKeyPressed(GLFW_KEY_W))
         {
-            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, 0.02f);
+            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, 1.0f * speedScaler);
             camera.moveAlongDirection(tmp);
         }
 
         if (input::isKeyPressed(GLFW_KEY_A))
         {
-            glm::vec3 tmp = glm::vec3(0.02f, 0.0f, 0.0f);
+            glm::vec3 tmp = glm::vec3(1.0f * speedScaler, 0.0f, 0.0f);
             camera.moveAlongDirection(tmp);
         }
 
         if (input::isKeyPressed(GLFW_KEY_S))
         {
-            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, -0.02f);
+            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, -1.0f * speedScaler);
             camera.moveAlongDirection(tmp);
         }
 
         if (input::isKeyPressed(GLFW_KEY_D))
         {
-            glm::vec3 tmp = glm::vec3(-0.02f, 0.0f, 0.0f);
+            glm::vec3 tmp = glm::vec3(-1.0f * speedScaler, 0.0f, 0.0f);
             camera.moveAlongDirection(tmp);
         }
 
@@ -88,6 +107,13 @@ int main()
         camera.m_rot.x = input::getMouseY() * 0.001f * (640.0f / 480.0f);
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        // set light-uniforms: AMBIENT
+        // TODO: perhabs abstract that away in the shader-class: shader.setAmbientColor(), shader.useAmbientColor()
+        shader.bind();
+        shader.setUniform3fv("u_ambientColor", glm::vec3(0.2f, 0.4f, 0.5f));
+        shader.setUniform1f("u_ambientStrength", 1.0f);
+        Shader::UnbindAll();
 
         glm::mat4 mvpTeapot =
             camera.getPerspective() *
