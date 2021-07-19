@@ -35,8 +35,6 @@ int main()
 
     Camera camera(75.0f, ratio, 0.003f, 1000.0f);
 
-    std::cout << glGetString(GL_VERSION) << std::endl;
-
     camera.movePosition(glm::vec3(2.0f, -2.0f, -5.0f));
 
     glClearColor(0.0f, 0.15f, 0.3f, 1.0f);
@@ -49,12 +47,13 @@ int main()
     glEnable(GL_LESS);
 
     Mesh meshTeapot("res/objects/teapot.obj");
-    Mesh meshCube("res/objects/testcube.obj");
 
     Texture texture("res/textures/marble.jpg");
     Shader shader("res/shaders/shader.vert", "res/shaders/shader.frag");
 
-    float speedScaler = 0.04f;
+    bool useOwnDiffuseLightNormalCalculation = false;
+
+    size_t engine_tick = 0;
 
     while (!display.shouldClose())
     {
@@ -65,41 +64,39 @@ int main()
             display.requestClose();
         }
 
-        if (input::isKeyPressed(GLFW_KEY_KP_SUBTRACT))
-        {
-            std::cout << "KEY_MINUS\n";
-            speedScaler -= 0.004f;
-            speedScaler = std::clamp(speedScaler, 0.02f, 0.20f);
-        }
-
-        if (input::isKeyPressed(GLFW_KEY_KP_ADD))
-        {
-            std::cout << "KEY_KP_ADD\n";
-            speedScaler += 0.004f;
-            speedScaler = std::clamp(speedScaler, 0.02f, 0.20f);
-        }
-
         if (input::isKeyPressed(GLFW_KEY_W))
         {
-            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, 1.0f * speedScaler);
+            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, 0.02f);
             camera.moveAlongDirection(tmp);
+        }
+
+        if (input::isKeyPressed(GLFW_KEY_F1))
+        {
+            std::cout << "Using own implementation\n";
+            useOwnDiffuseLightNormalCalculation = true;
+        }
+
+        if (input::isKeyPressed(GLFW_KEY_F2))
+        {
+            std::cout << "Using own tutorial implementation\n";
+            useOwnDiffuseLightNormalCalculation = false;
         }
 
         if (input::isKeyPressed(GLFW_KEY_A))
         {
-            glm::vec3 tmp = glm::vec3(1.0f * speedScaler, 0.0f, 0.0f);
+            glm::vec3 tmp = glm::vec3(0.02f, 0.0f, 0.0f);
             camera.moveAlongDirection(tmp);
         }
 
         if (input::isKeyPressed(GLFW_KEY_S))
         {
-            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, -1.0f * speedScaler);
+            glm::vec3 tmp = glm::vec3(0.0f, 0.0f, -0.02f);
             camera.moveAlongDirection(tmp);
         }
 
         if (input::isKeyPressed(GLFW_KEY_D))
         {
-            glm::vec3 tmp = glm::vec3(-1.0f * speedScaler, 0.0f, 0.0f);
+            glm::vec3 tmp = glm::vec3(-0.02f, 0.0f, 0.0f);
             camera.moveAlongDirection(tmp);
         }
 
@@ -115,18 +112,30 @@ int main()
         shader.setUniform1f("u_ambientStrength", 1.0f);
         Shader::UnbindAll();
 
-        glm::mat4 mvpTeapot =
-            camera.getPerspective() *
-            (camera.getViewMatrix() * glm::scale(glm::mat4(1.0f), glm::vec3(0.5, 0.5, 0.5)));
+        // set light-uniforms: DIFFUSE
+        // TODO: also abstract that away...
 
-        glm::mat4 mvpCube = camera.getPerspective() *
-                            (camera.getViewMatrix() *
-                             glm::translate(glm::scale(glm::mat4(1.0f), glm::vec3(0.2, 0.2, 0.2)),
-                                            glm::vec3(15, 15, 0)));
+        // calculate diffuse-position: should go round in a circle
+        float radius = 100.0f;
+        float f = 0.02 * engine_tick;
+        float z = glm::sin(f) * radius;
+        float x = glm::cos(f) * radius;
 
-        render::draw(meshTeapot, texture, shader, mvpTeapot);
-        render::draw(meshCube, texture, shader, mvpCube);
+        shader.bind();
+        shader.setUniform3fv("u_diffusePosition", glm::vec3(x, 0.0f, z));
+        shader.setUniform3fv("u_diffuseColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        shader.setUniform1i("u_useOwn", useOwnDiffuseLightNormalCalculation);
+        Shader::UnbindAll();
+
+        glm::mat4 model = glm::scale(glm::mat4(1.0f), glm::vec3(0.5f, 0.5f, 0.5f));
+
+        render::draw(
+            meshTeapot, texture, shader, model, camera.getViewMatrix(), camera.getPerspective());
 
         display.present();
+
+        ++engine_tick;
     }
+
+    return 0;
 }

@@ -70,8 +70,6 @@ Shader::~Shader()
 
 void Shader::setUniformMatrix4fv(const std::string& name, const glm::mat4& matrix)
 {
-    this->bind();
-
     int location = glGetUniformLocation(m_program, name.c_str());
 
     if (location == -1)

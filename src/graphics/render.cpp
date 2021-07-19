@@ -8,7 +8,12 @@
 namespace graphics::render
 {
 
-void draw(Mesh& mesh, Texture& texture, Shader& shader, const glm::mat4& mvp)
+void draw(Mesh& mesh,
+          Texture& texture,
+          Shader& shader,
+          const glm::mat4& model,
+          const glm::mat4& view,
+          const glm::mat4& perspective)
 {
     // bind given data
     mesh.bind();
@@ -19,7 +24,8 @@ void draw(Mesh& mesh, Texture& texture, Shader& shader, const glm::mat4& mvp)
     shader.setUniform1i("u_texture", 0);
 
     // upload uniform values
-    shader.setUniformMatrix4fv("u_mvp", mvp);
+    shader.setUniformMatrix4fv("u_mvp", perspective * (view * model));
+    shader.setUniformMatrix4fv("u_model", model);
 
     // specify vertex-layout
     glEnableVertexAttribArray(0);
@@ -28,6 +34,10 @@ void draw(Mesh& mesh, Texture& texture, Shader& shader, const glm::mat4& mvp)
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(
         1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(sizeof(float) * 3));
+
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(
+        2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (const void*)(sizeof(float) * 5));
 
     // actually draw verticies
     // TODO replace with glDrawElements for index-buffer

@@ -8,6 +8,11 @@
 namespace graphics::render
 {
 
-void draw(Mesh& mesh, Texture& texture, Shader& shader, const glm::mat4& mvp);
+void draw(Mesh& mesh,
+          Texture& texture,
+          Shader& shader,
+          const glm::mat4& model,
+          const glm::mat4& view,
+          const glm::mat4& perspective);
 
 } // namespace graphics::render

@@ -3,13 +3,10 @@
 #include <string>
 #include <vector>
 
+#include <Vertex.hpp>
+
 namespace graphics
 {
-struct Vertex
-{
-    float x, y, z;
-    float u, v;
-};
 
 class Mesh
 {

@@ -13,6 +13,7 @@ add_library(graphics
     stb_image.cpp
     Texture.hpp
     Texture.cpp
+    Vertex.hpp
 )
 
 target_include_directories(graphics PUBLIC
