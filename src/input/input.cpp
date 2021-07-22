@@ -2,6 +2,14 @@
 
 #include <GLFW/glfw3.h>
 
+// TODO: currently mousePosX, mousePosY are being used to
+// set the rotation of the camera directly. This can lead to nasty
+// floatingpoint inaccuracies when the player turns arround in one direction
+// alot... fix this
+
+// TODO: check if m_rot is used accordingly (perhaps it must be -m_rot, so
+// that m_rot displays the actual rotations along x, y and z achsis)
+
 static bool keyStates[512];
 static GLFWwindow* inputWindow;
 

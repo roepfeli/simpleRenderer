@@ -22,6 +22,7 @@ public:
     bool shouldClose();
     void present();
     void requestClose();
+    float getRatio();
 };
 
 } // namespace graphics

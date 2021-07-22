@@ -44,4 +44,9 @@ void Display::present()
     glfwSwapBuffers(m_window);
 }
 
+float Display::getRatio()
+{
+    return m_width / (float)m_height;
+}
+
 } // namespace graphics

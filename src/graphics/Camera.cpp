@@ -26,7 +26,7 @@ void Camera::movePosition(const glm::vec3& movement)
     m_pos += movement;
 }
 
-void Camera::moveAlongDirection(glm::vec3& movement)
+void Camera::moveAlongDirection(const glm::vec3& movement)
 {
     glm::vec4 movement4D = {movement.x, movement.y, movement.z, 1.0f};
 
@@ -38,7 +38,7 @@ void Camera::moveAlongDirection(glm::vec3& movement)
 }
 glm::mat4 Camera::getViewMatrix()
 {
-    return glm::translate(this->getCameraRotationMatrix(), m_pos);
+    return glm::translate(this->getCameraRotationMatrix(), -m_pos);
 };
 
 glm::mat4 Camera::getPerspective()

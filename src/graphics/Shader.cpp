@@ -72,10 +72,10 @@ void Shader::setUniformMatrix4fv(const std::string& name, const glm::mat4& matri
 {
     int location = glGetUniformLocation(m_program, name.c_str());
 
-    if (location == -1)
-    {
-        std::cout << "No Uniform named " << name << " found\n";
-    }
+    // if (location == -1)
+    // {
+    //     std::cout << "No Uniform named " << name << " found\n";
+    // }
 
     glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
@@ -84,10 +84,10 @@ void Shader::setUniform1i(const std::string& name, int value)
 {
     int location = glGetUniformLocation(m_program, name.c_str());
 
-    if (location == -1)
-    {
-        std::cout << "No Uniform named " << name << " found\n";
-    }
+    // if (location == -1)
+    // {
+    //     std::cout << "No Uniform named " << name << " found\n";
+    // }
 
     glUniform1i(location, value);
 }
@@ -96,10 +96,10 @@ void Shader::setUniform3fv(const std::string& name, const glm::vec3& vector)
 {
     int location = glGetUniformLocation(m_program, name.c_str());
 
-    if (location == -1)
-    {
-        std::cout << "No Uniform named " << name << " found\n";
-    }
+    // if (location == -1)
+    // {
+    //     std::cout << "No Uniform named " << name << " found\n";
+    // }
 
     glUniform3f(location, vector[0], vector[1], vector[2]);
 }
