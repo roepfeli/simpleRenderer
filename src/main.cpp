@@ -22,8 +22,8 @@
 #include <algorithm>
 #include <iostream>
 #include <string>
-
 #include <thread>
+#include <vector>
 
 using namespace graphics;
 
@@ -95,31 +95,24 @@ int main()
         // set light-uniforms: AMBIENT
         // TODO: perhabs abstract that away in the shader-class: shader.setAmbientColor(), shader.useAmbientColor()
         shader.bind();
-        shader.setUniform3fv("u_ambientColor", glm::vec3(0.2f, 0.4f, 0.2f));
-        shader.setUniform1f("u_ambientStrength", 1.0f);
+        shader.setUniform3f("u_ambientColor", glm::vec3(0.2f, 0.4f, 0.2f));
+        shader.setUniform1f("u_ambientStrength", 0.4f);
         Shader::UnbindAll();
 
         // set light-uniforms: DIFFUSE
-        // TODO: also abstract that away...
-
-        // calculate diffuse-position: should go round in a circle
-        // float radius = 100.0f;
-        // float f = 0.02 * engine_tick;
-        // float x = glm::cos(f) * radius;
-        // float y = glm::cos(f) * radius;
-        // float z = glm::sin(f) * radius;
+        shader.bind();
+        shader.setUniform3fv("u_diffusePosition",
+                             {glm::vec3(10.0f, 10.0f, 10.0f), glm::vec3(-10.0f, -10.0f, -10.0f)});
+        shader.setUniform3fv("u_diffuseColor",
+                             {glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f)});
+        Shader::UnbindAll();
 
         // set light-uniforms: SPECULAR
         // TODO: also abstract that away...
         shader.bind();
-        shader.setUniform3fv("u_cameraPosition", camera.m_pos);
-        shader.setUniform1f("u_specularStrength", 2.0f);
-        Shader::UnbindAll();
-
-        shader.bind();
-        // shader.setUniform3fv("u_diffusePosition", glm::vec3(x, y, z));
-        shader.setUniform3fv("u_diffusePosition", glm::vec3(10.0f, 10.0f, 10.0f));
-        shader.setUniform3fv("u_diffuseColor", glm::vec3(1.0f, 1.0f, 1.0f));
+        shader.setUniform3f("u_cameraPosition", camera.m_pos);
+        shader.setUniform1f("u_specularStrength", 0.5f);
+        shader.setUniform1i("u_numLightSources", 2);
         Shader::UnbindAll();
 
         glm::mat4 modelTeapot = glm::translate(glm::mat4(1.0f), glm::vec3(2.5f, 2.5f, 2.5f));

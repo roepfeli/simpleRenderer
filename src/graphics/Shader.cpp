@@ -1,6 +1,7 @@
 #include <Shader.hpp>
 
 #include <iostream>
+#include <vector>
 
 #include <GL/glew.h>
 
@@ -92,7 +93,7 @@ void Shader::setUniform1i(const std::string& name, int value)
     glUniform1i(location, value);
 }
 
-void Shader::setUniform3fv(const std::string& name, const glm::vec3& vector)
+void Shader::setUniform3f(const std::string& name, const glm::vec3& vector)
 {
     int location = glGetUniformLocation(m_program, name.c_str());
 
@@ -102,6 +103,18 @@ void Shader::setUniform3fv(const std::string& name, const glm::vec3& vector)
     // }
 
     glUniform3f(location, vector[0], vector[1], vector[2]);
+}
+
+void Shader::setUniform3fv(const std::string& name, const std::vector<glm::vec3>& vectors)
+{
+    int location = glGetUniformLocation(m_program, name.c_str());
+
+    if (location == -1)
+    {
+        std::cout << "No Uniform named " << name << " found\n";
+    }
+
+    glUniform3fv(location, vectors.size(), &vectors[0][0]);
 }
 
 void Shader::setUniform1f(const std::string& name, float value)
